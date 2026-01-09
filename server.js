@@ -44,8 +44,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(cors({
-    origin: ['https://saloonparlour.com/'],
-    credentials: true,
+    origin: ['https://saloonparlour.com'],
+    // credentials: true,
 }));
 
 // 2. Session
