@@ -44,7 +44,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(cors({
-    origin: ['http://127.0.0.1:5500'],
+    origin: ['https://saloonparlour.com/'],
     credentials: true,
 }));
 
