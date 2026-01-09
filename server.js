@@ -48,7 +48,7 @@ app.use(cors({
     credentials: true,
 }));
 
-// 2. Session
+// 2. Sessi
 app.use(session({
     secret: 'secretkey123',
     resave: false,
