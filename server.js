@@ -45,7 +45,7 @@ const upload = multer({ storage });
 
 app.use(cors({
     origin: ['https://saloonparlour.com'],
-    // credentials: true,
+    credentials: true,
 }));
 
 // 2. Session
