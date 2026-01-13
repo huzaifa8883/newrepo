@@ -45,6 +45,7 @@ const upload = multer({ storage });
 
 app.use(cors({
     origin: ['https://saloonparlour.com'],
+    // origin: ['http://127.0.0.1:5500'],
     credentials: true,
 }));
 
@@ -127,7 +128,58 @@ app.post('/register', (req, res) => {
         res.json({ success: true });
     });
 });
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
 
+    // Basic validation
+    if (!email || !password) {
+        return res.status(400).json({
+            success: false,
+            message: 'Email and password are required'
+        });
+    }
+
+    try {
+        // Find user by email
+        const user = await GrowUser.findOne({ email });
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid email or password'
+            });
+        }
+
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid email or password'
+            });
+        }
+
+        // Save session
+        req.session.userId = user._id;
+        req.session.email = user.email;
+
+        res.json({
+            success: true,
+            message: 'Login successful',
+            user: {
+                email: user.email,
+                name: user.name,
+                image: user.image
+            }
+        });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error'
+        });
+    }
+});
 app.get('/signup', (req, res) => {
     if (!req.session.verified) {
         return res.redirect('/register.html');
